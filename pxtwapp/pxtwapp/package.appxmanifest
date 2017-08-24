@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" xmlns:uap3="http://schemas.microsoft.com/appx/manifest/uap/windows10/3" IgnorableNamespaces="uap uap3 mp">
+  <Identity Name="64b7d78d-35eb-4053-b49a-a99f2fae1933" Version="1.0.1.0" Publisher="CN=Adafruit" />
+  <mp:PhoneIdentity PhoneProductId="34e8cde2-3991-414e-bb19-bff4bd5e031a" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
+  <Properties>
+    <DisplayName>pxtwapp</DisplayName>
+    <PublisherDisplayName>Lego</PublisherDisplayName>
+    <Logo>images\storelogo.png</Logo>
+  </Properties>
+  <Dependencies>
+    <TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.0.0" MaxVersionTested="10.0.0.0" />
+  </Dependencies>
+  <Resources>
+    <Resource Language="x-generate" />
+  </Resources>
+  <Applications>
+    <Application Id="App" StartPage="http://localhost:3232/index.html">
+      <uap:ApplicationContentUriRules>
+        <uap:Rule Match="http://localhost:3232/index.html" Type="include" WindowsRuntimeAccess="all" />
+        <uap:Rule Match="https://d541eec2-1e96-4b7b-a223-da9d01d0337a.pxt.io/" Type="include" WindowsRuntimeAccess="all" />
+        <uap:Rule Match="https://trg-ev3.userpxt.io/---simulator" Type="include" WindowsRuntimeAccess="none" />
+      </uap:ApplicationContentUriRules>
+      <uap:VisualElements DisplayName="Microsoft MakeCode for Lego EV3" Description="Microsoft MakeCode editor for Lego EV3" BackgroundColor="#fed30d" Square150x150Logo="images\Square150x150Logo.png" Square44x44Logo="images\Square44x44Logo.png">
+        <uap:DefaultTile Wide310x150Logo="images\Wide310x150Logo.png" Square71x71Logo="images\SmallTile.png">
+        </uap:DefaultTile>
+        <uap:SplashScreen Image="images\SplashScreen.png" BackgroundColor="#fed30d" />
+      </uap:VisualElements>
+      <Extensions>
+        <uap:Extension Category="windows.fileTypeAssociation">
+          <uap:FileTypeAssociation Name="makecode">
+            <uap:DisplayName>Microsoft MakeCode binary file</uap:DisplayName>
+            <uap:SupportedFileTypes>
+              <uap:FileType ContentType="application/x-makecode-uf2">.uf2</uap:FileType>
+            </uap:SupportedFileTypes>
+          </uap:FileTypeAssociation>
+        </uap:Extension>
+        <uap3:Extension Category="windows.appUriHandler">
+          <uap3:AppUriHandler>
+            <uap3:Host Name="d541eec2-1e96-4b7b-a223-da9d01d0337a.pxt.io" />
+          </uap3:AppUriHandler>
+        </uap3:Extension>
+      </Extensions>
+    </Application>
+  </Applications>
+  <Capabilities>
+    <Capability Name="internetClient" />
+    <DeviceCapability Name="serialcommunication">
+      <Device Id="any">
+        <Function Type="name:serialPort" />
+      </Device>
+    </DeviceCapability>
+    <DeviceCapability Name="humaninterfacedevice">
+      <Device Id="vidpid:0694 0005">
+        <Function Type="usage:FF00 *" />
+      </Device>
+    </DeviceCapability>
+  </Capabilities>
+</Package>

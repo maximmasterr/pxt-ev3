@@ -24,40 +24,6 @@ namespace pxt.editor {
             })
     }
 
-    let noHID = false
-
-    let initPromise: Promise<Ev3Wrapper>
-    function initAsync() {
-        if (initPromise)
-            return initPromise
-
-        let canHID = false
-        if (U.isNodeJS) {
-            canHID = true
-        } else {
-            const forceHexDownload = /forceHexDownload/i.test(window.location.href);
-            if (Cloud.isLocalHost() && Cloud.localToken && !forceHexDownload)
-                canHID = true
-        }
-
-        if (noHID)
-            canHID = false
-
-        if (canHID) {
-            initPromise = hf2Async()
-                .catch(err => {
-                    initPromise = null
-                    noHID = true
-                    return Promise.reject(err)
-                })
-        } else {
-            noHID = true
-            initPromise = Promise.reject(new Error("no HID"))
-        }
-
-        return initPromise
-    }
-
     export function deployCoreAsync(resp: pxtc.CompileResult, isCli = false) {
         let w: Ev3Wrapper
 
@@ -103,32 +69,30 @@ namespace pxt.editor {
             }
         }
 
-        if (noHID) return saveUF2Async()
-
-        return initAsync()
-            .then(w_ => {
-                w = w_
-                if (w.isStreaming)
-                    U.userError("please stop the program first")
-                return w.stopAsync()
-            })
-            .then(() => w.rmAsync(elfPath))
-            .then(() => w.flashAsync(elfPath, UF2.readBytes(origElfUF2, 0, origElfUF2.length * 256)))
-            .then(() => w.flashAsync(rbfPath, rbfBIN))
-            .then(() => w.runAsync(rbfPath))
-            .then(() => {
-                if (isCli)
-                    return w.disconnectAsync()
-                else
-                    return Promise.resolve()
-                //return Promise.delay(1000).then(() => w.dmesgAsync())
-            }).catch(e => {
-                // if we failed to initalize, retry
-                if (noHID)
-                    return saveUF2Async()
-                else
-                    return Promise.reject(e)
-            })
+        if (U.isNodeJS || pxt.Util.isWinRT()) {
+            return hf2Async()
+                .then(w_ => {
+                    w = w_
+                    if (w.isStreaming)
+                        U.userError("please stop the program first")
+                    return w.stopAsync()
+                })
+                .then(() => w.rmAsync(elfPath))
+                .then(() => w.flashAsync(elfPath, UF2.readBytes(origElfUF2, 0, origElfUF2.length * 256)))
+                .then(() => w.flashAsync(rbfPath, rbfBIN))
+                .then(() => w.runAsync(rbfPath))
+                .then(() => {
+                    if (isCli)
+                        return w.disconnectAsync();
+                    else
+                        return Promise.resolve();
+                }).catch(e => {
+                    // Automatic deployment failed; try manual deployment
+                    return saveUF2Async();
+                });
+        } else {
+            return saveUF2Async();
+        }
     }
 
     initExtensionsAsync = function (opts: pxt.editor.ExtensionOptions): Promise<pxt.editor.ExtensionResult> {
@@ -136,9 +100,6 @@ namespace pxt.editor {
         const res: pxt.editor.ExtensionResult = {
             deployCoreAsync,
         };
-        initAsync().catch(e => {
-            // probably no HID - we'll try this again upon deployment
-        })
         return Promise.resolve<pxt.editor.ExtensionResult>(res);
     }
 }

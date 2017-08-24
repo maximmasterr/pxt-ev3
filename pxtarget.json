@@ -42,12 +42,20 @@
         "flashCodeAlign": 256,
         "floatingPoint": true,
         "taggedInts": true,
-        "stackAlign": 2
+        "stackAlign": 2,
+        "hidSelectors": [
+            {
+                "usagePage": "0xFF00",
+                "usageId": "0x0001",
+                "vid": "0x0694",
+                "pid": "0x0005"
+            }
+        ]
     },
     "serial": {
-      "vendorId": "0x0694",
-      "productId": "0x0005",
-      "rawHID": true
+        "vendorId": "0x0694",
+        "productId": "0x0005",
+        "rawHID": true
     },
     "runtime": {
         "mathBlocks": true,
@@ -124,8 +132,7 @@
         "usbHelp": [],
         "extendEditor": true,
         "disableBlockIcons": true,
-        "blocklyOptions": {
-        },
+        "blocklyOptions": {},
         "blockColors": {
             "loops": "#0F841C",
             "logic": "#3979B9",
