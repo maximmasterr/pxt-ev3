@@ -137,7 +137,11 @@ namespace brick {
      * Shows an image on screen
      * @param image image to draw
      */
+<<<<<<< HEAD
     //% blockId=screen_show_image block="`icons.brickDisplay` show image %image=scren_image_picker"
+=======
+    //% blockId=screen_show_image block="show image %image=scren_image_picker"
+>>>>>>> added showimage
     //% weight=95 group="Screen" blockGap=8
     export function showImage(image: Image, delay: number = 400) {
         if (!image) return;
@@ -152,7 +156,11 @@ namespace brick {
      */
     //% blockId=scren_image_picker block="%image" shim=TD_ID
     //% image.fieldEditor="imagedropdown"
+<<<<<<< HEAD
     //% image.fieldOptions.columns=6
+=======
+    //% image.fieldOptions.columns=8
+>>>>>>> added showimage
     //% block.fieldOptions.hasSearchBar=true
     //% group="Screen" weight=0 blockHidden=1
     export function _imagePicker(image: Image): Image {
