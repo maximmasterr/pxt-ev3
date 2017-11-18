@@ -134,6 +134,17 @@ void playSample(Buffer buf) {
     startUser();
 }
 
+Buffer freq_to_wav(int freq) {
+    int chunk_len = 8000/f;
+    Buffer b = mkBuffer(null, 44 + chunk_len);
+    // header
+    fill(b, 0, 0, 44);
+    for (int i = 0; i < chunk_len; ++i) {
+        double tmp = sin(f * 2 * 3.14 * i / sample_rate);
+        int intVal = (int)(tmp * 2147483647.0) & 0xffffff00;
+        b->data[44+i] = intVal;
+    }
+}
 /**
 * Play a tone through the speaker for some amount of time.
 * @param frequency pitch of the tone to play in Hertz (Hz)
