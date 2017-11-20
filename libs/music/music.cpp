@@ -137,16 +137,20 @@ void playSample(Buffer buf) {
 
 Buffer freq_to_wav(int freq) {
     int chunk_len = 8000/freq;
+    DMESG("chunk_len %d", chunk_len);
     Buffer b = mkBuffer(NULL, 44 + chunk_len);
+    DMESG("b->length %d", b->length);
     // header
     memset(b->data, 0, 44);
     for (int i = 0; i < chunk_len; ++i) {
         double tmp = sin(freq * 2 * 3.14 * i / sample_rate);
-        int intVal = (int)(tmp * 2147483647.0) & 0xffffff00;
+        DMESG("tmp %f", tmp);
+        int intVal = 127*tmp + 128;
         b->data[44+i] = intVal;
+        DMESG("wrote %d to %d", intVal, (44+i));
     }
-    for (int i = 0; i < sizeof(b)/sizeof(b[0]); ++i) {
-        DMESG("Item %d: %d", i, b[i]);
+    for (int i = 0; i < b->length; ++i) {
+        DMESG("Item %d: %d", i, b->data[i]);
     }
     return b;
 }
@@ -162,6 +166,7 @@ Buffer freq_to_wav(int freq) {
 //% blockNamespace=music
 //% weight=76 blockGap=8
 void playTone(int frequency, int ms) {
+    DMESG("HELLO!!! %d", frequency);
     if (frequency < 300) {
         Buffer b = freq_to_wav(frequency);
     }
