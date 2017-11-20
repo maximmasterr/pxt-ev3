@@ -15,6 +15,7 @@ namespace music {
 
 uint8_t currVolume = 2;
 uint8_t *lmsSoundMMap;
+int sample_rate = 8000;
 
 int writeDev(void *data, int size) {
     int fd = open("/dev/lms_sound", O_WRONLY);
@@ -135,16 +136,21 @@ void playSample(Buffer buf) {
 }
 
 Buffer freq_to_wav(int freq) {
-    int chunk_len = 8000/f;
-    Buffer b = mkBuffer(null, 44 + chunk_len);
+    int chunk_len = 8000/freq;
+    Buffer b = mkBuffer(NULL, 44 + chunk_len);
     // header
-    fill(b, 0, 0, 44);
+    memset(b->data, 0, 44);
     for (int i = 0; i < chunk_len; ++i) {
-        double tmp = sin(f * 2 * 3.14 * i / sample_rate);
+        double tmp = sin(freq * 2 * 3.14 * i / sample_rate);
         int intVal = (int)(tmp * 2147483647.0) & 0xffffff00;
         b->data[44+i] = intVal;
     }
+    for (int i = 0; i < sizeof(b)/sizeof(b[0]); ++i) {
+        DMESG("Item %d: %d", i, b[i]);
+    }
+    return b;
 }
+
 /**
 * Play a tone through the speaker for some amount of time.
 * @param frequency pitch of the tone to play in Hertz (Hz)
@@ -156,6 +162,9 @@ Buffer freq_to_wav(int freq) {
 //% blockNamespace=music
 //% weight=76 blockGap=8
 void playTone(int frequency, int ms) {
+    if (frequency < 300) {
+        Buffer b = freq_to_wav(frequency);
+    }
     if (frequency <= 0) {
         _stopSound();
         if (ms >= 0)
