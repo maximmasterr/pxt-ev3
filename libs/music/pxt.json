@@ -4,6 +4,7 @@
     "files": [
         "README.md",
         "music.cpp",
+        "musicoverrides.ts",
         "enums.d.ts",
         "shims.d.ts",
         "melodies.ts",
