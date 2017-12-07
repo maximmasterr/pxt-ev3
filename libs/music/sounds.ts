@@ -257,7 +257,7 @@ namespace sounds {
 
 namespace music {
     let numSoundsPlaying = 0;
-    let soundsLimit = 3;
+    const soundsLimit = 3;
 
     /**
      * Plays a sound
@@ -287,7 +287,7 @@ namespace music {
     //% blockId=music_play_sound_effect block="play sound effect %sound"
     //% weight=99
     export function playSoundEffect(sound: Sound) {
-        if (!sound || numSoundsPlaying >= soundsLimit) return;
+        if (!sound || numSoundsPlaying > soundsLimit) return;
         numSoundsPlaying++;
         control.runInBackground(() => {sound.play(); numSoundsPlaying--;});
     }
