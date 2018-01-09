@@ -4,8 +4,10 @@
 
 @importGoogleFonts: false;
 
-@headerFont        : Roboto,"Arial Narrow","Helvetica Neue",Helvetica,Arial,sans-serif;
-@pageFont          : Roboto,"Helvetica Neue",Helvetica,Arial,sans-serif;
+@headerFont        : ChaletBold,"Arial Narrow","Helvetica Neue",Helvetica,Arial,sans-serif;
+@pageFont          : Chalet,"Helvetica Neue",Helvetica,Arial,sans-serif;
+@blocklyFont       : @pageFont;
+@blocklyBoldFont   : @headerFont;
 
 @emSize      : 14px;
 @fontSize    : 13px;

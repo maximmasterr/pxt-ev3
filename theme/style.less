@@ -16,11 +16,16 @@
 *******************************/
 
 /* Roboto font */
-@RobotoFont: data-uri("../docs/static/fonts/Roboto_400_normal.woff");
+@LegoChaletBold: data-uri("../docs/static/fonts/LEGOChalet60-Bold.woff");
+@LegoChaletRegular: data-uri("../docs/static/fonts/LEGOChalet60-Regular.woff");
 
 @font-face  {
-    font-family: 'Roboto';
-    src: @RobotoFont format("woff");
+    font-family: 'ChaletBold';
+    src: @LegoChaletBold format("woff");
+}
+@font-face  {
+    font-family: 'Chalet';
+    src: @LegoChaletRegular format("woff");
 }
 
 .ui.button.download-button {
